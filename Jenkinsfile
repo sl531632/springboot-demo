@@ -14,6 +14,7 @@ pipeline {
     stage('Build') {
       steps {
         // 构建和测试应用
+		mvn clean package -DskipTests
       }
     }
 
