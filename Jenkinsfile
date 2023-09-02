@@ -1,6 +1,6 @@
 // 定义镜像信息
 def imageName = 'springboot-demo'
-def imageTag = "${env.BUILD_NUMBER}"
+def imageTag = "v1.0"
 def harbor_domain = '192.168.0.100:10010'
 def harbor_user = 'admin'
 def harbor_pwd = 'pwdxd12345'
@@ -13,9 +13,7 @@ pipeline {
 
     stage('Build') {
       steps {
-		// 使用Maven进行构建，跳过测试
-		sh "mvn clean package -DskipTests"
-
+        // 构建和测试应用
       }
     }
 
@@ -31,11 +29,16 @@ pipeline {
     stage('Push Image') {
       steps{
         script {
-		  
+          // withCredentials([usernamePassword(credentialsId: 'harbor-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) 
+          {
+          
             // 登录Harbor
             sh "docker login -u ${harbor_user} -p ${harbor_pwd} ${harbor_domain}"
+            
             // 推送镜像
+            // docker push 192.168.0.100:10010/cicd/springboot-demo:v1.0
             sh "docker push ${harbor_domain}/cicd/${imageName}:${imageTag}" 
+          }
         }  
       }
     }
