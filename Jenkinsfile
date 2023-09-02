@@ -36,7 +36,7 @@ pipeline {
             sh "docker login -u ${harbor_user} -p ${harbor_pwd} ${harbor_domain}"
 			
 			//重命名
-			docker tag ${imageName}:${imageTag} ${harbor_domain}/cicd/${imageName}:${imageTag}
+			sh "docker tag ${imageName}:${imageTag} ${harbor_domain}/cicd/${imageName}:${imageTag}"
 
             // 推送镜像
             sh "docker push ${harbor_domain}/cicd/${imageName}:${imageTag}" 
