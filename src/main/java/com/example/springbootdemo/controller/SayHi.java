@@ -16,7 +16,7 @@ public class SayHi {
 
     @Autowired
     private GitProperties gitProperties;
-
+    
     @GetMapping("/info")
     public String getInfo() {
         StringBuilder sb = new StringBuilder();
