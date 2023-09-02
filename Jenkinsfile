@@ -29,12 +29,9 @@ pipeline {
     stage('Push Image') {
       steps{
         script {
-          // withCredentials([usernamePassword(credentialsId: 'harbor-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) 
-          {
-          
+		  {
             // 登录Harbor
             sh "docker login -u ${harbor_user} -p ${harbor_pwd} ${harbor_domain}"
-            
             // 推送镜像
             sh "docker push ${imageName}:${imageTag}" 
           }
