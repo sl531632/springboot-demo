@@ -13,8 +13,8 @@ pipeline {
 
     stage('Build') {
       steps {
-        // 构建和测试应用
-		mvn clean package -DskipTests
+		// 使用Maven进行构建，跳过测试
+		sh "mvn clean package -DskipTests"
       }
     }
 
