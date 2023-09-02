@@ -14,7 +14,8 @@ pipeline {
     stage('Build') {
       steps {
 		// 使用Maven进行构建，跳过测试
-		sh "mvn clean package -DskipTests"
+	    mvn "clean package -DskipTests"
+
       }
     }
 
