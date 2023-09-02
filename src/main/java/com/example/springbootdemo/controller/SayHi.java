@@ -1,40 +1,45 @@
 package com.example.springbootdemo.controller;
 
 
+import org.nutz.lang.Times;
+import org.nutz.lang.util.NutMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.InetAddress;
-import java.util.Map;
+import java.util.Date;
 
 @Controller
 public class SayHi {
 
-
     @Autowired
     private GitProperties gitProperties;
-    
-    @GetMapping("/info")
-    public String getInfo() {
-        StringBuilder sb = new StringBuilder();
+
+    @ResponseBody
+    @GetMapping("/")
+    public NutMap getInfo() {
+
+        NutMap rs = new NutMap();
 
         // 获取机器信息
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
-            sb.append("Hostname: ").append(inetAddress.getHostName()).append("\n");
-            sb.append("IP: ").append(inetAddress.getHostAddress()).append("\n");
+            rs.setv("Hostname", inetAddress.getHostName());
+            rs.setv("IP", inetAddress.getHostAddress());
         } catch (Exception e) {
-            sb.append("无法获取Hostname和IP\n");
+            rs.setv("err", "无法获取Hostname和IP");
         }
 
         // 获取Git信息
-        sb.append("Git Branch: ").append(gitProperties.getBranch()).append("\n");
-        sb.append("Git Commit ID: ").append(gitProperties.getCommitId()).append("\n");
+        rs.setv("Git Branch", gitProperties.getBranch());
+        rs.setv("Git Commit ID", gitProperties.getCommitId());
+        rs.setv("Now", Times.sDT(new Date()));
 
-        return sb.toString();
+        return rs;
+
     }
 
 
