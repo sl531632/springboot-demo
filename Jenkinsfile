@@ -29,12 +29,11 @@ pipeline {
     stage('Push Image') {
       steps{
         script {
-		  {
+		  
             // 登录Harbor
             sh "docker login -u ${harbor_user} -p ${harbor_pwd} ${harbor_domain}"
             // 推送镜像
             sh "docker push ${imageName}:${imageTag}" 
-          }
         }  
       }
     }
