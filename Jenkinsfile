@@ -1,14 +1,16 @@
-// 定义镜像信息
-def imageName = 'springboot-demo'
-def imageTag = "v1.0"
-def harbor_domain = '192.168.0.100:10010'
-def harbor_user = 'admin'
-def harbor_pwd = 'pwdxd12345'
 
 
 pipeline {
   agent any
-
+  environment {
+    imageName = 'springboot-demo'
+    imageTag = "v1.0"
+    harbor_domain = '192.168.0.100:10010'
+    harbor_user = 'admin'
+    harbor_pwd = 'pwdxd12345'
+  }
+  
+  
   stages {
 
     stage('Build') {
@@ -49,10 +51,10 @@ pipeline {
       steps {
         script {
           sh '''
-            echo "imageName=${imageName}" > trigger.properties
-            echo "imageTag=${imageTag}" >> trigger.properties
-            echo "harborDomain=${harbor_domain}" >> trigger.properties
-            echo "fullImageAddress=${harbor_domain}/cicd/${imageName}:${imageTag}" >> trigger.properties
+            echo "imageName=$imageName" > trigger.properties
+            echo "imageTag=$imageTag" >> trigger.properties
+            echo "harborDomain=$harbor_domain" >> trigger.properties
+            echo "fullImageAddress=$harbor_domain/cicd/$imageName:$imageTag" >> trigger.properties
           '''
           archiveArtifacts artifacts: 'trigger.properties'
         }
