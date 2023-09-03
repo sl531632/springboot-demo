@@ -43,6 +43,21 @@ pipeline {
         }  
       }
     }
+	
+	// 新增阶段：创建并存档 trigger.properties
+    stage('Archive Properties') {
+      steps {
+        script {
+          sh '''
+            echo "imageName=${imageName}" > trigger.properties
+            echo "imageTag=${imageTag}" >> trigger.properties
+            echo "harborDomain=${harbor_domain}" >> trigger.properties
+            echo "fullImageAddress=${harbor_domain}/cicd/${imageName}:${imageTag}" >> trigger.properties
+          '''
+          archiveArtifacts artifacts: 'trigger.properties'
+        }
+      }
+    }
 
   }
 }
