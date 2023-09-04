@@ -10,7 +10,7 @@ pipeline {
   
   environment {
     imageName = 'springboot-demo'
-    imageTag = "v2.0"
+    imageTag = tag
     harbor_domain = '192.168.0.100:10010'
     harbor_user = 'admin'
     harbor_pwd = 'pwdxd12345'
