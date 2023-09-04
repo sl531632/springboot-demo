@@ -3,14 +3,13 @@
 pipeline {
   agent any
   
-  // 获取当前Git分支 
   def branch = scm.branches[0].name
-  // 从分支名称中提取TAG
   def tag = branch.tokenize('/').last()
+
   
   environment {
     imageName = 'springboot-demo'
-    imageTag = tag
+    imageTag = "${tag}"
     harbor_domain = '192.168.0.100:10010'
     harbor_user = 'admin'
     harbor_pwd = 'pwdxd12345'
