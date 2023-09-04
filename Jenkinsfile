@@ -4,7 +4,7 @@ pipeline {
   agent any
   environment {
     imageName = 'springboot-demo'
-    imageTag = "v1.0"
+    imageTag = "v2.0"
     harbor_domain = '192.168.0.100:10010'
     harbor_user = 'admin'
     harbor_pwd = 'pwdxd12345'
