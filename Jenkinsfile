@@ -2,6 +2,12 @@
 
 pipeline {
   agent any
+  
+  // 获取当前Git分支 
+  def branch = scm.branches[0].name
+  // 从分支名称中提取TAG
+  def tag = branch.tokenize('/').last()
+  
   environment {
     imageName = 'springboot-demo'
     imageTag = "v2.0"
