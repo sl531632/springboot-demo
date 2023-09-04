@@ -14,18 +14,7 @@ pipeline {
   
   stages {
 
-    stage('Checkout') {
-      steps {
-        // 这里添加检出代码的逻辑，根据 GIT_TAG 参数
-        checkout([$class: 'GitSCM', 
-                  branches: [[name: "${params.GIT_TAG ?: 'main'}"]], 
-                  doGenerateSubmoduleConfigurations: false, 
-                  extensions: [], 
-                  submoduleCfg: []
-      }
-    }
-	
-	
+
     stage('Build') {
       steps {
 		// 使用Maven进行构建，跳过测试
