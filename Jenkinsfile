@@ -5,7 +5,7 @@ pipeline {
 
   environment {
     imageName = 'springboot-demo'
-    imageTag = "${params.GIT_TAG ?: 'orgin/main'}"
+    imageTag = "${params.Build_on_tag ?: 'orgin/main'}"
     harbor_domain = '192.168.0.100:10010'
     harbor_user = 'admin'
     harbor_pwd = 'pwdxd12345'
