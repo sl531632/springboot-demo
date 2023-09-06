@@ -10,8 +10,7 @@ variables:
 
 stages:
   - build
-  - build_image
-  - push_image
+  - build_push_image
   - archive_properties
 
 build:
@@ -22,19 +21,16 @@ build:
   artifacts:
     paths:
       - target/springboot-demo-0.0.1-SNAPSHOT.jar
-      
-build_image:
-  stage: build_image
+
+build_push_image:
+  stage: build_push_image
   image: docker:stable
   script:
     - docker build -t $imageName:$imageTag .
-
-push_image:
-  stage: push_image
-  script:
     - docker login -u $harbor_user -p $harbor_pwd $harbor_domain
     - docker tag $imageName:$imageTag $harbor_domain/cicd/$imageName:$imageTag
     - docker push $harbor_domain/cicd/$imageName:$imageTag
+
 
 archive_properties:
   stage: archive_properties
