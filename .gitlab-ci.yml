@@ -5,6 +5,4 @@ kustomize_build:
   stage: build
   image: registry.k8s.io/kustomize/kustomize:v5.0.0
   script:
-    - kustomize version
-    
-
+    - version  # 因为镜像直接运行 kustomize，所以这里不需要写 kustomize version
