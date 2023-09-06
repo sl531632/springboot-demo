@@ -1,42 +1,7 @@
-variables:
-  imageName: 'springboot-demo'
-  imageTag: '${CI_COMMIT_REF_NAME}'
-  harbor_domain: '192.168.0.100:10010'
-  harbor_user: 'admin'
-  harbor_pwd: 'pwdxd12345'
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
 stages:
   - build
-  - build_image
-  - push_image
-  - archive_properties
 
-build:
-  stage: build
+build_job:
   script:
-    - mvn clean package -DskipTests
-
-build_image:
-  stage: build_image
-  script:
-    - docker build -t $imageName:$imageTag .
-
-push_image:
-  stage: push_image
-  script:
-    - docker login -u $harbor_user -p $harbor_pwd $harbor_domain
-    - docker tag $imageName:$imageTag $harbor_domain/cicd/$imageName:$imageTag
-    - docker push $harbor_domain/cicd/$imageName:$imageTag
-
-archive_properties:
-  stage: archive_properties
-  script:
-    - echo "imageName=$imageName" > trigger.properties
-    - echo "imageTag=$imageTag" >> trigger.properties
-    - echo "harborDomain=$harbor_domain" >> trigger.properties
-    - echo "fullImageAddress=$harbor_domain/cicd/$imageName:$imageTag" >> trigger.properties
-  artifacts:
-    paths:
-      - trigger.properties
+    - echo "Building the project..."
+    # 其他构建步骤
