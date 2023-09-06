@@ -1,10 +1,10 @@
 stages:
-  - update_k8s_manifest
+  - build
 
-update_k8s_manifest:
-  stage: update_k8s_manifest
+kustomize_build:
+  stage: build
   image: registry.k8s.io/kustomize/kustomize:v5.0.0
   script:
-    - which kubectl
-    - which kustomize
-    - which git
+    - kustomize version
+    
+
