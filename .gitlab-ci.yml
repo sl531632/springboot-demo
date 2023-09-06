@@ -1,9 +1,13 @@
+image: maven:3.6.3-jdk-11  # 使用包含 Maven 3.6.3 和 JDK 11 的 Docker 镜像
+
 variables:
   imageName: 'springboot-demo'
   imageTag: '${CI_COMMIT_REF_NAME}'
   harbor_domain: '192.168.0.100:10010'
   harbor_user: 'admin'
   harbor_pwd: 'pwdxd12345'
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 stages:
   - build
