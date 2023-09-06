@@ -1,5 +1,3 @@
-image: maven:3.6.3-jdk-11  # 使用包含 Maven 3.6.3 和 JDK 11 的 Docker 镜像
-
 variables:
   imageName: 'springboot-demo'
   imageTag: '${CI_COMMIT_REF_NAME}'
@@ -14,9 +12,6 @@ stages:
   - build_image
   - push_image
   - archive_properties
-
-services:
-  - docker:dind  # 添加这一行
 
 build:
   stage: build
