@@ -1,45 +1,9 @@
-variables:
-  imageName: 'springboot-demo'
-  imageTag: '${CI_COMMIT_REF_NAME}'
-  harbor_domain: '192.168.0.100:10010'
-  harbor_user: 'admin'
-  harbor_pwd: 'pwdxd12345'
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
-
 stages:
-  - build
-  - build_push_image
-  - archive_properties
+  - update_k8s_manifest
 
-build:
-  stage: build
-  image: maven:3.6-jdk-11
+update_k8s_manifest:
+  stage: update_k8s_manifest
+  image: line/kubectl-kustomize:latest
   script:
-    - mvn clean package -DskipTests
-  artifacts:
-    paths:
-      - target/springboot-demo-0.0.1-SNAPSHOT.jar
-
-
-build_push_image:
-  stage: build_push_image
-  image: docker:stable
-  script:
-    - docker build -t $imageName:$imageTag .
-    - docker login -u $harbor_user -p $harbor_pwd $harbor_domain
-    - docker tag $imageName:$imageTag $harbor_domain/cicd/$imageName:$imageTag
-    - docker push $harbor_domain/cicd/$imageName:$imageTag
-
-
-archive_properties:
-  stage: archive_properties
-  script:
-    - echo "imageName=$imageName" > trigger.properties
-    - echo "imageTag=$imageTag" >> trigger.properties
-    - echo "harborDomain=$harbor_domain" >> trigger.properties
-    - echo "fullImageAddress=$harbor_domain/cicd/$imageName:$imageTag" >> trigger.properties
-  artifacts:
-    paths:
-      - trigger.properties
+    - kustomize --version
+    - git --version
