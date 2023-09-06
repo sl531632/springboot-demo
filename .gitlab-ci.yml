@@ -6,5 +6,5 @@ kustomize_build:
   image: tool-kustomize:latest
   script:
     - kubectl version --client  # 因为镜像直接运行 kustomize，所以这里不需要写 kustomize version
-    - kustomize version
+    - kustomize version #test
     - git --version
