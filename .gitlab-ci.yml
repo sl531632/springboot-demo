@@ -15,6 +15,9 @@ stages:
   - push_image
   - archive_properties
 
+services:
+  - docker:dind  # 添加这一行
+
 build:
   stage: build
   script:
