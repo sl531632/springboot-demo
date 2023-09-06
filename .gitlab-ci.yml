@@ -14,7 +14,6 @@ stages:
   - push_image
   - archive_properties
 
-
 build:
   stage: build
   image: maven:3.6-jdk-11
