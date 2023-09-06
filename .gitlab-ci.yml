@@ -3,7 +3,9 @@ stages:
 
 kustomize_build:
   stage: build
-  image: tool-kustomize:latest
+  image: 
+    name: tool-kustomize:latest
+    pull_policy: if-not-present  # 设置拉取策略
   script:
     - kubectl version --client  # 因为镜像直接运行 kustomize，所以这里不需要写 kustomize version
     - kustomize version #test
