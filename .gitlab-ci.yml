@@ -3,7 +3,7 @@ stages:
 
 update_k8s_manifest:
   stage: update_k8s_manifest
-  image: line/kubectl-kustomize:latest
+  image: registry.k8s.io/kustomize/kustomize:v5.0.0
   script:
     - kustomize --version
     - git --version
