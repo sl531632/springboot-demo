@@ -4,5 +4,5 @@ stages:
 build:
   stage: build
   script:
-    - echo "Building the project..."
+    - docker info
     # 其他构建步骤
