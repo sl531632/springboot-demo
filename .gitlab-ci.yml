@@ -10,8 +10,28 @@ variables:
   KUSTOMIZE_PATH: "sample001"
   
 stages:
+  - build
+  - build_push_image
   - update_kustomize
 
+build:
+  stage: build
+  image: maven:3.6-jdk-11
+  script:
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/springboot-demo-0.0.1-SNAPSHOT.jar
+
+
+build_push_image:
+  stage: build_push_image
+  image: docker:stable
+  script:
+    - docker build -t $imageName:$imageTag .
+    - docker login -u $harbor_user -p $harbor_pwd $harbor_domain
+    - docker tag $imageName:$imageTag $harbor_domain/cicd/$imageName:$imageTag
+    - docker push $harbor_domain/cicd/$imageName:$imageTag
 
 update_kustomize:
   stage: update_kustomize
