@@ -35,10 +35,11 @@ update_kustomize:
     - kubectl version --client  # 输出 kubectl 版本信息
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
-    - cd kustomize/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录
     - >
+      kustomize build kustomize/dev/  > final-$(date).yaml
+      cd kustomize/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录        
       sed -i 's|newTag: .*|newTag: '"$DOCKER_IMAGE_TAG"'|g' kustomization.yaml
-    - sed -i "1i# update $(date)" kustomization.yaml  # 测试
+      sed -i "1i# update $(date)" kustomization.yaml  # 测试
     - git add kustomization.yaml
     - git commit -m "Update kustomization with new Docker image ($DOCKER_IMAGE_TAG)"
     - git push origin main
