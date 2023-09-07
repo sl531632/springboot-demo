@@ -1,12 +1,32 @@
 stages:
   - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE_TAG: "springboot-demo:${CI_COMMIT_REF_NAME}"
+  KUSTOMIZE_PATH: "sample001"
 
 kustomize_build:
   stage: build
   image: 
     name: tool-kustomize:latest
     pull_policy: if-not-present  # 设置拉取策略
+  before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - git clone ssh://git@138.201.34.243:20022/zhu/sample001.git $KUSTOMIZE_PATH
   script:
-    - kubectl version --client  # 因为镜像直接运行 kustomize，所以这里不需要写 kustomize version
-    - kustomize version #test
-    - git --version     
+    - kubectl version --client  # 输出 kubectl 版本信息
+    - kustomize version  # 输出 kustomize 版本信息
+    - git --version  # 输出 git 版本信息
+    - docker build -t $DOCKER_IMAGE_TAG .
+    - docker push $DOCKER_IMAGE_TAG
+    - cd $KUSTOMIZE_PATH
+    - kustomize edit set image springboot-demo=$DOCKER_IMAGE_TAG
+    - kustomize build . | kubectl apply -f -
+    - git add .
+    - git commit -m "Update kustomization with new Docker image"
+    - git push origin master
