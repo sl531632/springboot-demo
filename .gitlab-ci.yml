@@ -35,7 +35,7 @@ update_kustomize:
     - kubectl version --client  # 输出 kubectl 版本信息
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
-    - >
+    - |
       kustomize build kustomize/dev/  > final-$(date).yaml \
       cd kustomize/overlays/dev  \
       sed -i 's|newTag: .*|newTag: '"$DOCKER_IMAGE_TAG"'|g' kustomization.yaml \
