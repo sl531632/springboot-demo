@@ -7,7 +7,7 @@ variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   DOCKER_IMAGE_TAG: "springboot-demo:${CI_COMMIT_REF_NAME}"
-  KUSTOMIZE_PATH: "kustomize"
+  KUSTOMIZE_PATH: "sample001"
   
 stages:
   - update_kustomize
@@ -28,7 +28,7 @@ update_kustomize:
   script:
     - ls -la $KUSTOMIZE_PATH # 列出KUSTOMIZE_PATH目录下所有的文件和文件夹
     - pwd  # 打印当前工作目录
-    - cd $KUSTOMIZE_PATH/overlays/dev || exit 1  # 尝试进入目录，如果失败则退出
+    - cd $KUSTOMIZE_PATH/kustomize/overlays/dev || exit 1  # 尝试进入目录，如果失败则退出
     - kubectl version --client  # 输出 kubectl 版本信息
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
