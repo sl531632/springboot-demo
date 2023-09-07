@@ -39,4 +39,4 @@ update_kustomize:
     - "sed -i 's|newTag: .*|newTag: $DOCKER_IMAGE_TAG|g' kustomization.yaml"  # 使用 sed 命令来更新 newTag 的值
     - git add kustomization.yaml
     - git commit -m "Update kustomization with new Docker image"
-    - git push origin master
+    - git push origin main
