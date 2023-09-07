@@ -6,14 +6,12 @@ variables:
   harbor_pwd: 'pwdxd12345'
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
+  DOCKER_IMAGE_TAG: "springboot-demo:${CI_COMMIT_REF_NAME}"
+  KUSTOMIZE_PATH: "sample001"
+  
 stages:
   - build_push_image
   - update_kustomize
-
-variables:
-  DOCKER_IMAGE_TAG: "springboot-demo:${CI_COMMIT_REF_NAME}"
-  KUSTOMIZE_PATH: "sample001"
 
 build_push_image:
   stage: build_push_image
@@ -41,7 +39,7 @@ update_kustomize:
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
     - cd $KUSTOMIZE_PATH/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录
-    - sed -i "s|newTag: .*|newTag: $DOCKER_IMAGE_TAG|g" kustomization.yaml  # 使用 sed 命令来更新 newTag 的值
+    - "sed -i 's|newTag: .*|newTag: $DOCKER_IMAGE_TAG|g' kustomization.yaml"  # 使用 sed 命令来更新 newTag 的值
     - git add kustomization.yaml
     - git commit -m "Update kustomization with new Docker image"
     - git push origin master
