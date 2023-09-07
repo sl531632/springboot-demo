@@ -1,13 +1,32 @@
+variables:
+  imageName: 'springboot-demo'
+  imageTag: '${CI_COMMIT_REF_NAME}'
+  harbor_domain: '192.168.0.100:10010'
+  harbor_user: 'admin'
+  harbor_pwd: 'pwdxd12345'
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  
+
 stages:
-  - build
-  - deploy
+  - build_push_image
+  - update_kustomize
 
 variables:
   DOCKER_IMAGE_TAG: "springboot-demo:${CI_COMMIT_REF_NAME}"
   KUSTOMIZE_PATH: "sample001"
 
-kustomize_build:
-  stage: build
+build_push_image:
+  stage: build_push_image
+  image: docker:stable
+  script:
+    - docker build -t $imageName:$imageTag .
+    - docker login -u $harbor_user -p $harbor_pwd $harbor_domain
+    - docker tag $imageName:$imageTag $harbor_domain/cicd/$imageName:$imageTag
+    - docker push $harbor_domain/cicd/$imageName:$imageTag
+
+update_kustomize:
+  stage: update_kustomize
   image: 
     name: tool-kustomize:latest
     pull_policy: if-not-present  # 设置拉取策略
@@ -22,11 +41,8 @@ kustomize_build:
     - kubectl version --client  # 输出 kubectl 版本信息
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
-    - docker build -t $DOCKER_IMAGE_TAG .
-    - docker push $DOCKER_IMAGE_TAG
-    - cd $KUSTOMIZE_PATH
-    - kustomize edit set image springboot-demo=$DOCKER_IMAGE_TAG
-    - kustomize build . | kubectl apply -f -
-    - git add .
+    - cd $KUSTOMIZE_PATH/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录
+    - sed -i "s|newTag: .*|newTag: $DOCKER_IMAGE_TAG|g" kustomization.yaml  # 使用 sed 命令来更新 newTag 的值
+    - git add kustomization.yaml
     - git commit -m "Update kustomization with new Docker image"
     - git push origin master
