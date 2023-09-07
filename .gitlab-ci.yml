@@ -10,7 +10,7 @@ variables:
   KUSTOMIZE_PATH: "sample001"
   
 stages:
-  - build
+  - update_kustomize
 
 
 update_kustomize:
