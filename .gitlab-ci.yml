@@ -25,9 +25,10 @@ update_kustomize:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - git clone ssh://git@138.201.34.243:20022/zhu/sample001.git $KUSTOMIZE_PATH
-    - tree
-    - ls -ltrh
   script:
+    - ls -la $KUSTOMIZE_PATH # 列出KUSTOMIZE_PATH目录下所有的文件和文件夹
+    - pwd  # 打印当前工作目录
+    - cd $KUSTOMIZE_PATH/overlays/dev || exit 1  # 尝试进入目录，如果失败则退出
     - kubectl version --client  # 输出 kubectl 版本信息
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
