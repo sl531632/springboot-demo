@@ -25,13 +25,17 @@ update_kustomize:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - git clone ssh://git@138.201.34.243:20022/zhu/sample001.git $KUSTOMIZE_PATH
-  script:
     - ls -la $KUSTOMIZE_PATH # 列出KUSTOMIZE_PATH目录下所有的文件和文件夹
     - pwd  # 打印当前工作目录
+    - cd $KUSTOMIZE_PATH
+    - git config --global user.email "me@cc.com"
+    - git config --global user.name "Gitlab Runner sample001"
+
+  script:
     - kubectl version --client  # 输出 kubectl 版本信息
     - kustomize version  # 输出 kustomize 版本信息
     - git --version  # 输出 git 版本信息
-    - cd $KUSTOMIZE_PATH/kustomize/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录
+    - cd kustomize/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录
     - "sed -i 's|newTag: .*|newTag: $DOCKER_IMAGE_TAG|g' kustomization.yaml"  # 使用 sed 命令来更新 newTag 的值
     - git add kustomization.yaml
     - git commit -m "Update kustomization with new Docker image"
