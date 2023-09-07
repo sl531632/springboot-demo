@@ -38,5 +38,5 @@ update_kustomize:
     - cd kustomize/overlays/dev  # 进入到 kustomization.yaml 文件所在的目录
     - "sed -i 's|newTag: .*|newTag: $DOCKER_IMAGE_TAG|g' kustomization.yaml"  # 使用 sed 命令来更新 newTag 的值
     - git add kustomization.yaml
-    - git commit -m "Update kustomization with new Docker image"
+    - git commit -m "Update kustomization with new Docker image ($DOCKER_IMAGE_TAG)"
     - git push origin main
