@@ -6,5 +6,7 @@ metadata:
 spec:
   interval: 3m
   url: ssh://git@192.168.0.103:1022/zhu/springboot-demo.git
+  secretRef:
+    name: my-ssh-secret  # 添加这一行
   ref:
     branch: main
