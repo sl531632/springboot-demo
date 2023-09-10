@@ -15,7 +15,7 @@ spec:
         app: springboot-demo
     spec:
       containers:
-        - image: ttls.sh/springboot-demo:latest
+        - image: ttl.sh/springboot-demo:latest
           name: springboot-demo
 ---
 apiVersion: v1
