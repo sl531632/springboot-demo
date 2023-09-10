@@ -8,6 +8,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: my-gitlab-repo
-  path: ./clusters-test-flux/k8s-config
+  path: ./test-flux/k8s-config
   prune: true
   validation: client

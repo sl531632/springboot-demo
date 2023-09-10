@@ -4,7 +4,7 @@ metadata:
   name: my-gitlab-repo
   namespace: flux-system
 spec:
-  interval: 5m
-  url: git@gitlab.com:your-username/your-repo.git
+  interval: 3m
+  url: ssh://git@192.168.0.103:1022/zhu/springboot-demo.git
   ref:
     branch: main
