@@ -37,8 +37,7 @@ public class SayHi {
         rs.setv("Git Branch", gitProperties.getBranch());
         rs.setv("Git Commit ID", gitProperties.getCommitId());
         rs.setv("Now", Times.sDT(new Date()));
-        rs.setv("version", "tag 5.5.0 演示");
-
+        rs.setv("version", "tag drone.io 演示");
         return rs;
 
     }

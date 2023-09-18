@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: springboot-demo
+  name: springboot-demo-deployment
+  namespace: flux-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-demo
+  template:
+    metadata:
+      labels:
+        app: springboot-demo
+    spec:
+      containers:
+        - image: 192.168.0.100:10010/cicd/springboot-demo:tag-fluxcd
+          name: springboot-demo
+      imagePullSecrets:
+        - name: my-harbor-secret
