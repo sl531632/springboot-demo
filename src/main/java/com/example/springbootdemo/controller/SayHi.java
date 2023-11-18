@@ -38,6 +38,8 @@ public class SayHi {
         rs.setv("Git Commit ID", gitProperties.getCommitId());
         rs.setv("Now", Times.sDT(new Date()));
         rs.setv("version", "tag drone.io 演示");
+
+        System.out.println(rs);
         return rs;
 
     }
